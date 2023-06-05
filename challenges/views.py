@@ -33,6 +33,7 @@ def index(request):
     
     response_data = f"<ul>{list_items}</ul>"
     return HttpResponse(response_data) """
+    
 
 def monthly_challenge_by_number(request, month):
     months = list(monthly_challenges.keys())
