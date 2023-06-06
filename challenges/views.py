@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -36,21 +36,26 @@ def index(request):
     
 
 def monthly_challenge_by_number(request, month):
+    print("month: " + str(month))
     months = list(monthly_challenges.keys())
+    print("months: " + str(months))
     if month > len(months):
-        return HttpResponseNotFound('My man, what are you doing?')
+        raise Http404()
     redirect_month = months[month-1]
+    print("redirect_month: " + redirect_month)
     redirect_path = reverse('month-challenge', args=[redirect_month])
-    HttpResponseRedirect(redirect_path)
+    print("redirect_path: " + redirect_path)
+    return HttpResponseRedirect(redirect_path)
+    
 
 def monthly_challenge(request, month):
-    #try:
-    challenge_text = monthly_challenges[month]
-    return render(request, "challenges/challenge.html", {
+    try:
+        challenge_text = monthly_challenges[month]
+        return render(request, "challenges/challenge.html", {
         "text": challenge_text,
         "month_name": month
         })
         
-    #except:
-    #    return HttpResponseNotFound('<h1>this month is not supported</h1>')
+    except:
+        raise Http404()
     
