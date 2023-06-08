@@ -20,11 +20,12 @@ monthly_challenges = {
     'december': 'Get some sleep'
 }
 
+
 def index(request):
     list_items = ""
     months = list(monthly_challenges.keys())
 
-    return render(request, "challenges/index.html",{
+    return render(request, "challenges/index.html", {
         "months": months
     })
     """ for month in months:
@@ -33,7 +34,7 @@ def index(request):
     
     response_data = f"<ul>{list_items}</ul>"
     return HttpResponse(response_data) """
-    
+
 
 def monthly_challenge_by_number(request, month):
     print("month: " + str(month))
@@ -46,16 +47,15 @@ def monthly_challenge_by_number(request, month):
     redirect_path = reverse('month-challenge', args=[redirect_month])
     print("redirect_path: " + redirect_path)
     return HttpResponseRedirect(redirect_path)
-    
+
 
 def monthly_challenge(request, month):
     try:
         challenge_text = monthly_challenges[month]
         return render(request, "challenges/challenge.html", {
-        "text": challenge_text,
-        "month_name": month
+            "text": challenge_text,
+            "month_name": month
         })
-        
+
     except:
         raise Http404()
-    
